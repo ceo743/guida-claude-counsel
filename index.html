@@ -237,6 +237,7 @@ function submitForm(e){
     marketing_consent:document.getElementById('fieldMarketing').checked?'yes':'no'
   });
   fetch('https://hooks.zapier.com/hooks/catch/6421650/366544269/',{
+
     method:'POST',
     body:data
   }).catch(function(){});
