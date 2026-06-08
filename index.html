@@ -221,9 +221,11 @@ drawParticles();window.addEventListener('resize',drawParticles);
 // ===== FORM SUBMIT =====
 function submitForm(e){
   e.preventDefault();
-  var form=document.getElementById('leadForm');
-  var fields=[form.name,form.email,form.phone];
+  var fieldName=document.getElementById('fieldName');
+  var fieldEmail=document.getElementById('fieldEmail');
+  var fieldPhone=document.getElementById('fieldPhone');
   var privacy=document.getElementById('fieldPrivacy');
+  var fields=[fieldName,fieldEmail,fieldPhone];
   var hasError=false;
   // Reset errors
   fields.forEach(function(f){f.classList.remove('error')});
@@ -232,7 +234,9 @@ function submitForm(e){
   fields.forEach(function(f){
     if(!f.value.trim()){f.classList.add('error');hasError=true}
   });
-  if(form.email.value.trim()&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.value.trim())){form.email.classList.add('error');hasError=true;}
+  if(fieldEmail.value.trim()&&!/^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(fieldEmail.value.trim())){fieldEmail.classList.add('error');hasError=true;}
+  var cleanPhone=fieldPhone.value.trim().replace(/[\s\-\+\.]/g,'');
+  if(fieldPhone.value.trim()&&(!/^\d+$/.test(cleanPhone)||cleanPhone.length<9||cleanPhone.length>13)){fieldPhone.classList.add('error');hasError=true;}
   if(!privacy.checked){privacy.classList.add('checkbox-error');hasError=true}
   if(hasError) return;
   // Clear errors on input
@@ -243,9 +247,9 @@ function submitForm(e){
   btn.disabled=true;
   btnText.textContent='INVIO IN CORSO...';
   var data=new URLSearchParams({
-    name:form.name.value,
-    email:form.email.value,
-    phone:form.phone.value,
+    name:fieldName.value.trim(),
+    email:fieldEmail.value.trim(),
+    phone:fieldPhone.value.trim(),
     marketing_consent:document.getElementById('fieldMarketing').checked?'yes':'no'
   });
   fetch('https://hooks.zapier.com/hooks/catch/6421650/4bhm9hj/',{
