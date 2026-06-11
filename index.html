@@ -233,6 +233,15 @@ drawParticles();window.addEventListener('resize',drawParticles);
   drawTrail();
 })();
 
+// ===== UTM CAPTURE =====
+(function(){
+  var p=new URLSearchParams(window.location.search);
+  ['utm_source','utm_medium','utm_campaign','utm_content'].forEach(function(k){
+    var v=p.get(k);
+    if(v){var el=document.getElementById(k);if(el)el.value=v;}
+  });
+})();
+
 // ===== FORM SUBMIT =====
 function submitForm(e){
   e.preventDefault();
@@ -265,7 +274,11 @@ function submitForm(e){
     name:fieldName.value.trim(),
     email:fieldEmail.value.trim(),
     phone:fieldPhone.value.trim(),
-    marketing_consent:document.getElementById('fieldMarketing').checked?'yes':'no'
+    marketing_consent:document.getElementById('fieldMarketing').checked?'yes':'no',
+    utm_source:document.getElementById('utm_source').value,
+    utm_medium:document.getElementById('utm_medium').value,
+    utm_campaign:document.getElementById('utm_campaign').value,
+    utm_content:document.getElementById('utm_content').value
   });
   fetch('https://hooks.zapier.com/hooks/catch/6421650/4bhm9hj/',{
 
